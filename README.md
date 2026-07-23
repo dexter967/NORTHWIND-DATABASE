@@ -1,78 +1,43 @@
-# Northwind Database — SQL + Pandas Business Analysis
- 
-## 📦 Database Overview
- 
-**Source:** [Northwind SQLite3](https://github.com/jpwhite3/northwind-SQLite3) — a SQLite3 port
-of Microsoft's classic Northwind sample database.
- 
-Northwind models a small specialty food import/export company and includes customers, orders,
-order line items, products, categories, suppliers, employees, and shippers. The core tables used
-in this analysis:
- 
-| Table | Purpose |
-|---|---|
-| `Customers` | Company/contact info per customer. |
-| `Orders` | One row per order (who ordered, when, who processed it, how it shipped). |
-| `Order Details` | One row per product line within an order — quantity, unit price, discount. |
-| `Products` | Product catalogue, including category and supplier. |
-| `Categories` | Product category names/descriptions. |
-| `Employees`, `Suppliers`, `Shippers` | Supporting reference tables. |
- 
-Revenue for any line item is computed as:
- 
-```
-Revenue = Quantity × UnitPrice × (1 − Discount)
-```
- 
-which matches the formula Northwind's own built-in views (`Order Details Extended`, `Order
-Subtotals`) use.
- 
-## 💼 Business Questions
- 
-This analysis answers five concrete business questions:
- 
-1. **Which products sell the best?** → Top 10 products by total revenue.
-2. **Who are the most valuable customers?** → Top 10 customers by total revenue.
-3. **How does demand change over time?** → Monthly sales/revenue trend.
-4. **Which product categories perform best?** → Revenue and units sold by category.
-5. **How often do customers come back?** → Purchase frequency per customer (order count,
-   active date range, average days between orders).
-## 🗂️ Repository Contents
- 
-- **`queries.sql`** — the 5 SQL queries that answer the business questions above, written for
-  SQLite3. Each is labeled with a `-- QUERY: <name>` marker so `analysis.ipynb` can load them
-  programmatically instead of duplicating SQL in Python.
-- **`analysis.ipynb`** — connects to the database, runs each query via `pandas.read_sql_query`,
-  explores the results (shape, dtypes, summary stats), builds a chart per question, and ends with
-  a cell that **auto-generates the 5 key insights** from the live query results (see below).
-- **`README.md`** — this file.
-## 🔑 Key Insights
- 
-`analysis.ipynb` computes these automatically from the query results, so the numbers always match
-whatever data is loaded. The five insights it generates are:
- 
-1. **Best-selling product** — which product leads in total revenue and how many units it sold.
-2. **Top customer** — the single highest-revenue customer and their order count.
-3. **Seasonality** — the best and worst month for revenue, and the percentage swing between them.
-4. **Category concentration** — the top-performing product category and how many products
-   drive its revenue.
-5. **Purchase frequency** — the average number of orders per customer, and how concentrated
-   ordering is among the most frequent (top-decile) customers.
-*(Run the notebook once to see the actual filled-in numbers for your data — see screenshots
-placeholder below.)*
- 
-### 📸 SQL Output Screenshots
- 
-*(Add screenshots here after running `analysis.ipynb` — e.g. the Top 10 Products table, the
-monthly revenue chart, and the printed insights cell.)*
- 
-## 🛠️ How to Reproduce
- 
-1. Download the database file from the repo's own download link:
-   [`northwind.db`](https://raw.githubusercontent.com/jpwhite3/northwind-SQLite3/main/dist/northwind.db)
-   and place it in the same folder as `analysis.ipynb` (keep the filename `northwind.db`, or
-   update `DB_PATH` at the top of the notebook).
-2. `pip install pandas matplotlib` (SQLite support is built into Python's standard library).
-3. Run `analysis.ipynb` top to bottom. Each business question prints/plots its result, and the
-   final insights cell prints all 5 insights generated from the real numbers.
- 
+Epochs '26 - Assignment 2: Northwind Database Analysis
+Database Overview
+This project analyzes the Northwind sample database, a classic small-business dataset covering customers, orders, products, categories, suppliers and employees. The database used is the SQLite version: https://github.com/jpwhite3/northwind-SQLite3 (dist/northwind.db).
+
+The goal was to answer real-world business questions using SQL, then explore and visualize the results using Pandas in Python.
+
+Business Questions Answered
+What are the Top 10 selling products (by quantity sold)?
+Who are the Top 10 customers by revenue?
+What do monthly sales trends look like over time?
+Which product categories perform best by revenue?
+Which customers order most frequently?
+Repository Contents
+queries.sql - Raw SQL queries used to answer each business question
+analysis.ipynb - SQL execution against the database, results loaded into Pandas, exploratory analysis and charts
+README.md - This file
+screenshots - Screenshots of sql queries' execution
+SQL Output Screenshots
+Top 10 Products
+
+Top 10 Customers
+
+Monthly Sales Trend
+
+Best Categories
+
+Purchase Frequency
+
+Key Insights
+Product sales are remarkably even at the top. The top 10 products all sold within a narrow band of roughly 203,000–206,000 units (Louisiana Hot Spiced Okra leads at 206,213), showing no single "hero product" dominates — demand is spread broadly across the catalog rather than concentrated in one bestseller.
+
+Revenue is heavily concentrated among a small set of customers. The top customer generated over $9.7M in revenue, roughly 58% more than the second-highest customer (B's Beverages at ~$6.15M), indicating the business relies significantly on a handful of major accounts.
+
+Sales have grown substantially over time. Monthly revenue rose from around $2.07M in mid-2012 to a fairly stable $3-3.5M range by 2023, showing steady long-term growth, with the business roughly 50%+ larger by revenue in its later years compared to its early months.
+
+Beverages is the standout category. Beverages generated ~$92.2M in revenue, well ahead of the next category (Confections at ~$66.3M) - nearly 39% higher, making it the clear priority category for inventory and marketing focus.
+
+High-value customers also tend to order most frequently, but not perfectly in sync. The top customer by order count (335 orders) also topped revenue, but customers ranked #2–4 by order frequency don't fully match the top revenue ranks, suggesting a mix of frequent, smaller-basket customers and infrequent, high-value ones.
+
+Tools Used
+SQLite (via Python's sqlite3 module)
+Pandas for data analysis
+Google Colab as the development environment
